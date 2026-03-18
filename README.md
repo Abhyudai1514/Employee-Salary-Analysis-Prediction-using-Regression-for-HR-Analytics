@@ -76,7 +76,7 @@ This project includes an interactive web application built using Streamlit.
 
 ### Run the app:
 ```bash
-streamlit run app.py
+app.py
 ```
 
 ### Features:

@@ -19,7 +19,8 @@ st.divider()
 st.info(
     "ℹ️ Enter values carefully:\n"
     "- Satisfaction level should be between 1 (low) and 10 (high)\n"
-    "- Average monthly hours typically range between 150–300"
+    "- Average monthly hours typically range between 150–300\n"
+    "- Salary output is estimated per month (INR ₹)"
 )
 
 # ---------------- INPUT SECTION ----------------
@@ -56,25 +57,21 @@ st.divider()
 # ---------------- INPUT VALIDATION ----------------
 validation_messages = []
 
-# Subtle unrealistic combo
 if years_at_company == 0 and average_monthly_hours >= 140:
     validation_messages.append(
         "⚠️ This combination looks unusual (0 years with significant working hours)."
     )
 
-# Very high workload
 if average_monthly_hours > 320:
     validation_messages.append(
         "⚠️ Monthly hours are quite high — please verify."
     )
 
-# Low satisfaction + high hours
 if satisfaction_level <= 3 and average_monthly_hours > 250:
     validation_messages.append(
         "⚠️ Low satisfaction with high workload may indicate inconsistent input."
     )
 
-# Show warnings (non-blocking)
 for msg in validation_messages:
     st.warning(msg)
 
@@ -99,8 +96,8 @@ if st.button("🔍 Predict Salary"):
         prediction = model.predict(X_scaled)[0]
 
         # ---------------- OUTPUT ----------------
-        st.success(f"💰 Predicted Salary: ₹ {prediction:,.2f}")
-        st.metric("Estimated Salary", f"₹ {prediction:,.0f}")
+        st.success(f"💰 Estimated Monthly Salary: ₹ {prediction:,.2f}")
+        st.metric("Monthly Salary (INR)", f"₹ {prediction:,.0f}")
 
     except Exception as e:
         st.error(f"❌ Prediction error: {e}")

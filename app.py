@@ -4,58 +4,77 @@ import numpy as np
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
-    page_title="Salary Predictor",
+    page_title="Workforce Salary Analysis",
     page_icon="💼",
     layout="centered"
 )
 
 # ---------------- TITLE ----------------
-st.title("💼 Employee Salary Prediction App")
-st.markdown("### Predict employee salary using Machine Learning")
+st.title("📊 Workforce Salary Analysis & Prediction")
+st.markdown("Analyze employee data and predict salary using machine learning")
 
 st.divider()
 
 # ---------------- INFO ----------------
 st.info(
-    "ℹ️ Provide employee details below. "
-    "Satisfaction level ranges from 1 (low) to 10 (high)."
+    "ℹ️ Enter values carefully:\n"
+    "- Satisfaction level should be between 1 (low) and 10 (high)\n"
+    "- Average monthly hours typically range between 150–300"
 )
 
 # ---------------- INPUT SECTION ----------------
 col1, col2 = st.columns(2)
 
 with col1:
-    years_at_company = st.slider("📅 Years at Company", 0, 20, 5)
+    years_at_company = st.number_input(
+        "📅 Years at Company",
+        min_value=0,
+        max_value=40,
+        value=5,
+        step=1
+    )
 
 with col2:
-    satisfaction_level = st.slider("😊 Satisfaction Level (1–10)", 1, 10, 5)
+    satisfaction_level = st.number_input(
+        "😊 Satisfaction Level (1–10)",
+        min_value=1,
+        max_value=10,
+        value=5,
+        step=1
+    )
 
-average_monthly_hours = st.slider("⏱️ Average Monthly Hours", 120, 400, 200)
+average_monthly_hours = st.number_input(
+    "⏱️ Average Monthly Hours",
+    min_value=50,
+    max_value=400,
+    value=200,
+    step=10
+)
 
 st.divider()
 
 # ---------------- INPUT VALIDATION ----------------
 validation_messages = []
 
-# Rule 1: Unrealistic combo
-if years_at_company == 0 and average_monthly_hours > 250:
+# Subtle unrealistic combo
+if years_at_company == 0 and average_monthly_hours >= 140:
     validation_messages.append(
-        "⚠️ High working hours with 0 years at company seems unrealistic."
+        "⚠️ This combination looks unusual (0 years with significant working hours)."
     )
 
-# Rule 2: Extremely high workload
-if average_monthly_hours > 350:
+# Very high workload
+if average_monthly_hours > 320:
     validation_messages.append(
-        "⚠️ Monthly hours seem very high. Please verify."
+        "⚠️ Monthly hours are quite high — please verify."
     )
 
-# Rule 3: Low satisfaction + high hours
+# Low satisfaction + high hours
 if satisfaction_level <= 3 and average_monthly_hours > 250:
     validation_messages.append(
-        "⚠️ Low satisfaction with high workload may indicate unusual data."
+        "⚠️ Low satisfaction with high workload may indicate inconsistent input."
     )
 
-# Show warnings
+# Show warnings (non-blocking)
 for msg in validation_messages:
     st.warning(msg)
 
@@ -71,9 +90,8 @@ except Exception as e:
 if st.button("🔍 Predict Salary"):
 
     if len(validation_messages) > 0:
-        st.info("👉 You can still proceed, but please review the warnings above.")
+        st.info("👉 You can still proceed, but review the warnings above.")
 
-    # Prepare input
     X = [[years_at_company, satisfaction_level, average_monthly_hours]]
 
     try:
@@ -82,16 +100,14 @@ if st.button("🔍 Predict Salary"):
 
         # ---------------- OUTPUT ----------------
         st.success(f"💰 Predicted Salary: ₹ {prediction:,.2f}")
-
-        # Optional metric display (nice UI touch)
-        st.metric(label="Estimated Salary", value=f"₹ {prediction:,.0f}")
+        st.metric("Estimated Salary", f"₹ {prediction:,.0f}")
 
     except Exception as e:
         st.error(f"❌ Prediction error: {e}")
 
 else:
-    st.warning("⚠️ Adjust inputs and click 'Predict Salary'")
+    st.warning("⚠️ Enter inputs and click 'Predict Salary'")
 
 # ---------------- FOOTER ----------------
 st.markdown("---")
-st.caption("Built with ❤️ using Streamlit | Machine Learning Project for HR Analytics")
+st.caption("Built with ❤️ using Streamlit | HR Analytics Project")

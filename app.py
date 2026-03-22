@@ -20,7 +20,7 @@ st.info(
     "ℹ️ Enter values carefully:\n"
     "- Satisfaction level should be between 1 (low) and 10 (high)\n"
     "- Average monthly hours typically range between 150–300\n"
-    "- Salary output is estimated per month (INR ₹)"
+    "- Salary output is estimated per month and yearly (INR ₹)"
 )
 
 # ---------------- INPUT SECTION ----------------
@@ -95,9 +95,18 @@ if st.button("🔍 Predict Salary"):
         X_scaled = scaler.transform(X)
         prediction = model.predict(X_scaled)[0]
 
+        yearly_salary = prediction * 12
+
         # ---------------- OUTPUT ----------------
         st.success(f"💰 Estimated Monthly Salary: ₹ {prediction:,.2f}")
-        st.metric("Monthly Salary (INR)", f"₹ {prediction:,.0f}")
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.metric("Monthly Salary (INR)", f"₹ {prediction:,.0f}")
+
+        with col2:
+            st.metric("Yearly Salary (INR)", f"₹ {yearly_salary:,.0f}")
 
     except Exception as e:
         st.error(f"❌ Prediction error: {e}")

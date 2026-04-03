@@ -57,6 +57,20 @@ The dataset contains employee-related attributes such as:
 
 ---
 
+## 📊 Power BI Dashboard
+
+This project also includes an interactive Power BI dashboard to visualize key HR insights.
+
+### 🔍 Dashboard Highlights:
+- Salary comparison across departments and gender  
+- Salary trends based on experience  
+- Attrition trends and patterns  
+- Department-wise salary distribution  
+- Salary vs Experience analysis
+
+### 📁 Dashboard File:
+[View Dashboard](./HR_Analytics_Dashboard.pdf)
+
 ## 📂 Project Structure
 
 ```
